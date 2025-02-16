@@ -4,7 +4,7 @@ module.exports = {
 
     async up(knex) {
 
-        await knex.schema.createTable('movies', (table) => {
+        await knex.schema.createTable('movie', (table) => {
 
             table.increments('id').primary();
             table.string('title').notNull();
@@ -19,6 +19,6 @@ module.exports = {
 
     async down(knex) {
 
-        await knex.schema.dropTableIfExists('movies');
+        await knex.schema.dropTableIfExists('movie');
     }
 };

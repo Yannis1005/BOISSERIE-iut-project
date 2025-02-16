@@ -45,6 +45,7 @@ module.exports = [
         path: '/user/{id}',
         options: {
             tags:['api'],
+            auth : false,
             validate: {
                 params: Joi.object({
                     id: Joi.number().integer().required().min(1)
