@@ -16,6 +16,7 @@ module.exports = class Movie extends Model {
             director: Joi.string().min(1).required().example('Christopher Nolan').description('Director of the movie'),
             releaseDate: Joi.date().required().example('2010-07-16').description('Release date of the movie'),
             genre: Joi.string().min(1).required().example('Thriller').description('Genre of the movie'),
+            description: Joi.string().min(1).required().example('Dom Cobb is a thief skilled in the perilous art of extraction: his specialty is to appropriate an individual\'s most precious secrets..').description('Description of the movie'),
             createdAt: Joi.date(),
             updatedAt: Joi.date()
         });

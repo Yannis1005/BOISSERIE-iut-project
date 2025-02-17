@@ -11,6 +11,7 @@ module.exports = {
             table.string('director').notNull();
             table.date('releaseDate').notNull();
             table.string('genre').notNull();
+            table.string('description').notNull();
 
             table.dateTime('createdAt').notNull().defaultTo(knex.fn.now());
             table.dateTime('updatedAt').notNull().defaultTo(knex.fn.now());
