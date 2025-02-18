@@ -47,6 +47,7 @@ module.exports = class UserService extends Service {
 
         const token = Jwt.token.generate(
             {
+                id: user.id, // Ajout de l'id de l'utilisateur pour les favoris
                 aud: 'urn:audience:iut',
                 iss: 'urn:issuer:iut',
                 firstName: user.firstName,
