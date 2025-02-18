@@ -70,8 +70,6 @@ module.exports = [
             const { favoriteMovieService } = request.services();
             const { id: userId } = request.auth.credentials;
 
-            request.log(['debug'], `User ID: ${userId}`); // Ajoutez ce log pour vérifier l'ID de l'utilisateur
-
             try {
                 return await favoriteMovieService.getFavorites(userId);
             } catch (err) {

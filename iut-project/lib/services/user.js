@@ -7,11 +7,15 @@ const Jwt = require('@hapi/jwt');
 
 module.exports = class UserService extends Service {
 
-    create(user){
-
+    async create(user) {
         const { User } = this.server.models();
+        const newUser = await User.query().insertAndFetch(user);
 
-        return User.query().insertAndFetch(user);
+        // Send welcome email
+        const { mailService } = this.server.services();
+        await mailService.sendWelcomeEmail(newUser);
+
+        return newUser;
     }
 
     findAll(){

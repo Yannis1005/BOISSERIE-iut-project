@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 const Glue = require('@hapi/glue');
 const Exiting = require('exiting');
 const Manifest = require('./manifest');
