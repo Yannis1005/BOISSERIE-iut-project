@@ -30,7 +30,10 @@ module.exports = [
         method: 'get',
         path: '/users',
         options: {
-            tags:['api']
+            tags:['api'],
+            auth : {
+                scope: ['user']
+            }
         },
         handler: async (request, h) => {
 
