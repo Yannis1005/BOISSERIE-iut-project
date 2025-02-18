@@ -7,8 +7,10 @@ module.exports = [
         method: 'post',
         path: '/movie',
         options: {
-            auth: false,
             tags: ['api'],
+            auth : {
+                scope : ['admin']
+            },
             validate: {
                 payload: Joi.object({
                     title: Joi.string().required().example('Inception').description('Title of the movie'),
@@ -41,7 +43,9 @@ module.exports = [
         path: '/movie/{id}',
         options: {
             tags: ['api'],
-            auth: false,
+            auth : {
+                scope : ['admin']
+            },
             validate: {
                 params: Joi.object({
                     id: Joi.number().integer().required().min(1)
@@ -58,7 +62,9 @@ module.exports = [
         path: '/movie/{id}',
         options: {
             tags: ['api'],
-            auth: false,
+            auth : {
+                scope : ['admin']
+            },
             validate: {
                 params: Joi.object({
                     id: Joi.number().integer().required().min(1)

@@ -7,8 +7,8 @@ module.exports = [
         method: 'post',
         path: '/user',
         options: {
-            auth: false,
             tags:['api'],
+            auth : false,
             validate: {
             payload: Joi.object({
                 firstName: Joi.string().required().min(3).example('John').description('Firstname of the user'),
@@ -30,7 +30,6 @@ module.exports = [
         method: 'get',
         path: '/users',
         options: {
-            auth: false,
             tags:['api']
         },
         handler: async (request, h) => {
@@ -45,7 +44,6 @@ module.exports = [
         path: '/user/{id}',
         options: {
             tags:['api'],
-            auth : false,
             validate: {
                 params: Joi.object({
                     id: Joi.number().integer().required().min(1)
