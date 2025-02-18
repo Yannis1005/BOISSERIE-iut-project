@@ -4,9 +4,18 @@ const { Service } = require('@hapipal/schmervice');
 
 module.exports = class MovieService extends Service {
 
-    create(movie) {
+    async create(movie) {
         const { Movie } = this.server.models();
-        return Movie.query().insertAndFetch(movie);
+        const newMovie = await Movie.query().insertAndFetch(movie);
+
+        const { mailService, userService } = this.server.services();
+        const users = await userService.findAll();
+
+        for (const user of users) {
+            await mailService.sendNewMovieEmail(user, newMovie);
+        }
+
+        return newMovie;
     }
 
     findAll() {

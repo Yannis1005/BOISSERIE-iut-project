@@ -10,15 +10,15 @@ module.exports = [
             tags:['api'],
             auth : false,
             validate: {
-            payload: Joi.object({
-                firstName: Joi.string().required().min(3).example('John').description('Firstname of the user'),
-                lastName: Joi.string().required().min(3).example('Doe').description('Lastname of the user'),
-                email: Joi.string().required().email().example('john@doe.fr').description('Email of the user'),
-                password: Joi.string().required().example('password').description('Password of the user'),
-                username: Joi.string().required().example('johndoe').description('Username of the user')
-            })
-        }
-    },
+                payload: Joi.object({
+                    firstName: Joi.string().required().min(3).example('John').description('Firstname of the user'),
+                    lastName: Joi.string().required().min(3).example('Doe').description('Lastname of the user'),
+                    email: Joi.string().required().email().example('john@doe.fr').description('Email of the user'),
+                    password: Joi.string().required().example('password').description('Password of the user'),
+                    username: Joi.string().required().example('johndoe').description('Username of the user')
+                })
+            }
+        },
         handler: async (request, h) => {
 
             const { userService } = request.services();
@@ -30,7 +30,10 @@ module.exports = [
         method: 'get',
         path: '/users',
         options: {
-            tags:['api']
+            tags:['api'],
+            auth : {
+                scope: ['user']
+            }
         },
         handler: async (request, h) => {
 
