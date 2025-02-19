@@ -63,4 +63,22 @@ module.exports = class FavoriteMovieService extends Service {
             throw err;
         }
     }
+
+    async getUsersWithFavoriteMovie(movieId) {
+        try {
+            if (!movieId) {
+                throw Boom.badRequest('Movie ID is required');
+            }
+
+            const { Favorite, User } = this.server.models();
+
+            return Favorite.query()
+                .where('movieId', movieId)
+                .join('user', 'favorite.userId', 'user.id')
+                .select('user.*');
+        } catch (err) {
+            this.server.log(['error'], err);
+            throw err;
+        }
+    }
 };

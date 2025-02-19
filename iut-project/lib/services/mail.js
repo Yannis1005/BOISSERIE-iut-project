@@ -23,6 +23,11 @@ module.exports = class MailService extends Service {
     }
 
     async sendWelcomeEmail(user) {
+        if (!user) {
+            console.error('User is undefined', { user});
+            return;
+        }
+
         const mailOptions = {
             from: process.env.MAIL_FROM,
             to: user.email,
@@ -40,6 +45,11 @@ module.exports = class MailService extends Service {
     }
 
     async sendNewMovieEmail(user, movie) {
+        if (!user || !movie) {
+            console.error('User or movie is undefined', { user, movie });
+            return;
+        }
+
         const mailOptions = {
             from: process.env.MAIL_FROM,
             to: user.email,
@@ -55,6 +65,35 @@ module.exports = class MailService extends Service {
                 <li><strong>Description</strong>: ${movie.description}</li>
             </ul>
             <p>Make sure to check it out and let us know your thoughts!</p>
+            <p>Happy watching!</p>
+            <p>Best regards,<br>The Awesome Team</p>
+        `
+        };
+
+        await this.transporter.sendMail(mailOptions);
+    }
+
+    async sendMovieUpdateEmail(user, movie) {
+        if (!user || !movie) {
+            console.error('User or movie is undefined', { user, movie });
+            return;
+        }
+
+        const mailOptions = {
+            from: process.env.MAIL_FROM,
+            to: user.email,
+            subject: `Movie Update: ${movie.title}`,
+            html: `
+            <p>Hi ${user.firstName},</p>
+            <p>We wanted to let you know that the movie <strong>${movie.title}</strong> in your favorites has been updated! 🎬</p>
+            <p>Here are the updated details:</p>
+            <ul>
+                <li><strong>Title</strong>: ${movie.title}</li>
+                <li><strong>Director</strong>: ${movie.director}</li>
+                <li><strong>Genre</strong>: ${movie.genre}</li>
+                <li><strong>Description</strong>: ${movie.description}</li>
+            </ul>
+            <p>Make sure to check out the updated movie and let us know your thoughts!</p>
             <p>Happy watching!</p>
             <p>Best regards,<br>The Awesome Team</p>
         `

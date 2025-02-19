@@ -28,8 +28,19 @@ module.exports = class MovieService extends Service {
         return Movie.query().deleteById(id);
     }
 
-    update(id, movie) {
-        const { Movie } = this.server.models();
-        return Movie.query().findById(id).patch(movie);
+    async update(id, movie) {
+        const { Movie, Favorite } = this.server.models();
+        await Movie.query().findById(id).patch(movie);
+
+        const updatedMovie = await Movie.query().findById(id);
+
+        const { mailService, favoriteMovieService } = this.server.services();
+        const favoriteUsers = await favoriteMovieService.getUsersWithFavoriteMovie(id);
+
+        for (const user of favoriteUsers) {
+            await mailService.sendMovieUpdateEmail(user, updatedMovie);
+        }
+
+        return updatedMovie;
     }
 };
