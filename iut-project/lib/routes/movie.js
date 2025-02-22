@@ -1,6 +1,7 @@
 'use strict';
 
 const Joi = require('joi');
+const { parse } = require('json2csv');
 
 module.exports = [
     {
@@ -89,6 +90,27 @@ module.exports = [
             const { movieService } = request.services();
 
             return await movieService.update(request.params.id, request.payload);
+        }
+    },
+    {
+        method: 'post',
+        path: '/movies/export',
+        options: {
+            tags: ['api'],
+            auth: {
+                scope: ['admin']
+            }
+        },
+        handler: async (request, h) => {
+            const { movieService, messageBrokerService } = request.services();
+            const { email } = request.auth.credentials;
+
+            const movies = await movieService.findAll();
+            const csv = parse(movies);
+
+            await messageBrokerService.sendCSVExport(email, csv);
+
+            return h.response({ message: 'CSV export requested successfully' }).code(202);
         }
     }
 ];

@@ -24,7 +24,7 @@ module.exports = class MailService extends Service {
 
     async sendWelcomeEmail(user) {
         if (!user) {
-            console.error('User is undefined', { user});
+            console.error('User is undefined', { user });
             return;
         }
 
@@ -37,11 +37,15 @@ module.exports = class MailService extends Service {
                 <p>We're absolutely thrilled to have you join our community. 🎉</p>
                 <p>At our service, we strive to provide the best experience possible, and we're here to support you every step of the way.</p>
                 <p>If you have any questions or need assistance, don't hesitate to reach out. We're always happy to help!</p>
-                <p>Cheers,<br>The Awesome Team</p>
+                <p>Best regards,<br>The Awesome Team</p>
             `
         };
 
-        await this.transporter.sendMail(mailOptions);
+        try {
+            await this.transporter.sendMail(mailOptions);
+        } catch (err) {
+            console.error('Failed to send welcome email:', err);
+        }
     }
 
     async sendNewMovieEmail(user, movie) {
@@ -70,7 +74,11 @@ module.exports = class MailService extends Service {
         `
         };
 
-        await this.transporter.sendMail(mailOptions);
+        try {
+            await this.transporter.sendMail(mailOptions);
+        } catch (err) {
+            console.error('Failed to send new movie email:', err);
+        }
     }
 
     async sendMovieUpdateEmail(user, movie) {
@@ -99,6 +107,42 @@ module.exports = class MailService extends Service {
         `
         };
 
-        await this.transporter.sendMail(mailOptions);
+        try {
+            await this.transporter.sendMail(mailOptions);
+        } catch (err) {
+            console.error('Failed to send movie update email:', err);
+        }
+    }
+
+    async sendCSVEmail(email, csv) {
+        if (!email || !csv) {
+            console.error('User or movie is undefined', { email, csv });
+            return;
+        }
+
+        const mailOptions = {
+            from: process.env.MAIL_FROM,
+            to: email,
+            subject: 'Your Requested Movies CSV Export',
+            html: `
+                <p>Dear User,</p>
+                <p>Attached is the CSV export of the movies you requested.</p>
+                <p>If you have any questions or need further assistance, please do not hesitate to contact us.</p>
+                <p>Best regards,<br>The Awesome Team</p>
+            `,
+            attachments: [
+                {
+                    filename: 'movies.csv',
+                    content: csv
+                }
+            ]
+        };
+
+        try {
+            await this.transporter.sendMail(mailOptions);
+        } catch (err) {
+            console.error('Failed to send CSV email:', err);
+            throw err;
+        }
     }
 };
