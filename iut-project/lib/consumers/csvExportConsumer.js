@@ -6,24 +6,25 @@ module.exports = async (server) => {
     const { mailService } = server.services();
 
     try {
-        console.log('Starting consumer...');
 
         const connection = await amqp.connect('amqp://localhost');
-        console.log('Connected to RabbitMQ');
-
         const channel = await connection.createChannel();
         const queue = 'csv_exports';
+
         await channel.assertQueue(queue, { durable: true });
 
+        // Consommez les messages de la file d'attente
         channel.consume(queue, async (msg) => {
             if (msg !== null) {
 
+                // Analysez le contenu du message
                 const { email, csv } = JSON.parse(msg.content.toString());
 
                 try {
-                    console.log('Sending CSV email to:', email);
+                    // Envoyez l'email avec le CSV
                     await mailService.sendCSVEmail(email, csv);
                     channel.ack(msg);
+
                 } catch (err) {
                     console.error('Failed to send email:', err);
                     channel.nack(msg);
