@@ -23,7 +23,8 @@ module.exports = [
             const { movieId } = request.payload;
 
             try {
-                return await favoriteMovieService.addFavorite(userId, movieId);
+                const result = await favoriteMovieService.addFavorite(userId, movieId);
+                return h.response(result).code(201);
             } catch (err) {
                 request.log(['error'], err);
                 throw err;
@@ -50,7 +51,8 @@ module.exports = [
             const { movieId } = request.params;
 
             try {
-                return await favoriteMovieService.removeFavorite(userId, movieId);
+                const result = await favoriteMovieService.removeFavorite(userId, movieId);
+                return h.response(result).code(200);
             } catch (err) {
                 request.log(['error'], err);
                 throw err;
@@ -71,7 +73,8 @@ module.exports = [
             const { id: userId } = request.auth.credentials;
 
             try {
-                return await favoriteMovieService.getFavorites(userId);
+                const result = await favoriteMovieService.getFavorites(userId);
+                return h.response(result).code(200);
             } catch (err) {
                 request.log(['error'], err);
                 throw err;

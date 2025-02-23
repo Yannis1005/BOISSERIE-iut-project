@@ -11,14 +11,23 @@ module.exports = class FavoriteMovieService extends Service {
                 throw Boom.badRequest(`User ID and Movie ID are required. Received userId: ${userId}, movieId: ${movieId}`);
             }
 
-            const { Favorite } = this.server.models();
+            const { Favorite, Movie } = this.server.models();
 
+            // Vérifiez si le film existe
+            const movie = await Movie.query().findById(movieId);
+            if (!movie) {
+                throw Boom.notFound('Movie not found');
+            }
+
+            // Vérifiez si le film est déjà dans les favoris
             const existingFavorite = await Favorite.query().findOne({ userId, movieId });
             if (existingFavorite) {
                 throw Boom.conflict('Movie is already in favorites');
             }
 
-            return Favorite.query().insertAndFetch({ userId, movieId });
+            await Favorite.query().insertAndFetch({ userId, movieId });
+            return { message: 'Movie added to your favorites successfully' };
+
         } catch (err) {
             this.server.log(['error'], err);
             throw err;
@@ -31,8 +40,15 @@ module.exports = class FavoriteMovieService extends Service {
                 throw Boom.badRequest('User ID and Movie ID are required');
             }
 
-            const { Favorite } = this.server.models();
+            const { Favorite, Movie } = this.server.models();
 
+            // Vérifiez si le film existe
+            const movie = await Movie.query().findById(movieId);
+            if (!movie) {
+                throw Boom.notFound('Movie not found');
+            }
+
+            // Vérifiez si le film est dans les favoris
             const existingFavorite = await Favorite.query().findOne({ userId, movieId });
             if (!existingFavorite) {
                 throw Boom.notFound('Movie is not in favorites');
@@ -40,6 +56,7 @@ module.exports = class FavoriteMovieService extends Service {
 
             await Favorite.query().delete().where({ userId, movieId });
             return { message: 'Favorite removed successfully' };
+
         } catch (err) {
             this.server.log(['error'], err);
             throw err;
@@ -58,6 +75,7 @@ module.exports = class FavoriteMovieService extends Service {
                 .where('userId', userId)
                 .join('movie', 'favorite.movieId', 'movie.id')
                 .select('movie.*');
+
         } catch (err) {
             this.server.log(['error'], err);
             throw err;
@@ -76,6 +94,7 @@ module.exports = class FavoriteMovieService extends Service {
                 .where('movieId', movieId)
                 .join('user', 'favorite.userId', 'user.id')
                 .select('user.*');
+
         } catch (err) {
             this.server.log(['error'], err);
             throw err;
