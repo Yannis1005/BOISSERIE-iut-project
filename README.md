@@ -1,16 +1,24 @@
-# Projet Node IUT 🎬
+# Projet Node IUT
 
-## Description 📚
+## Description 📝
 
 Ce projet est une application Node.js permettant la gestion d'une bibliothèque de films. Parmi ses fonctionnalités, on retrouve :
 
-- 📧 L'envoi automatique d'un e-mail de bienvenue lors de la création d'un utilisateur.
-- 🎥 La gestion complète des films avec les informations suivantes : titre, réalisateur, date de sortie, genre et description.
-- 🔧 L'administration des films par les utilisateurs disposant des droits adéquats (ajout, modification et suppression).
-- ⭐ La possibilité pour les utilisateurs d'avoir une liste de films en favoris.
-- 📬 Des notifications par e-mail lors de l'ajout ou de la mise à jour d'un film (uniquement si le film est en favori pour ce dernier cas).
-- 📊 L'export des films au format CSV via un message broker, avec envoi du fichier par e-mail.
+### Fonctionnalités principales
 
+- **Envoi d'e-mails** :
+   - Envoi automatique d'un e-mail de bienvenue lors de la création d'un utilisateur.
+   - Notifications par e-mail lors de l'ajout ou de la mise à jour d'un film (uniquement si le film est en favori pour ce dernier cas).
+
+
+- **Gestion des films** :
+   -  Gestion complète des films avec les informations suivantes : titre, réalisateur, date de sortie, genre et description.
+   -  Administration des films par les utilisateurs disposant des droits adéquats (ajout, modification et suppression).
+   -  Possibilité pour les utilisateurs d'avoir une liste de films en favoris.
+
+
+- **Export des films** :
+   -  Export des films au format CSV via un message broker, avec envoi du fichier par e-mail.
 ## Prérequis 🛠️
 
 Pour exécuter cette application, vous aurez tout d'abord besoin des éléments suivants :
@@ -58,7 +66,7 @@ Pour exécuter l'application, vous aurez besoin d'une base de données MySQL. No
 docker run -d --name hapi-mysql -p 3307:3306 -e MYSQL_ROOT_PASSWORD=hapi -e MYSQL_DATABASE=user mysql:8.0 --default-authentication-plugin=mysql_native_password
 ```
 
-## Migrations 🧑‍💻
+## Migrations 📅
 
 Pour créer les tables nécessaires à l'application, exécutez les migrations avec la commande suivante :
 
