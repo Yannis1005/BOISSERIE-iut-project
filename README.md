@@ -38,7 +38,7 @@ Pour exécuter cette application, vous aurez tout d'abord besoin des éléments 
 2. Déplacez-vous dans le répertoire du projet :
 
    ```bash
-   cd BOISSERIE-iut-project
+   cd BOISSERIE-iut-project/iut-project
    ```
 
 2. Installez ensuite les dépendances du projet :
