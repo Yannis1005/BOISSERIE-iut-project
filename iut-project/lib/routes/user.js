@@ -14,7 +14,7 @@ module.exports = [
                     firstName: Joi.string().required().min(3).example('John').description('Firstname of the user'),
                     lastName: Joi.string().required().min(3).example('Doe').description('Lastname of the user'),
                     email: Joi.string().required().email().example('john@doe.fr').description('Email of the user'),
-                    password: Joi.string().required().example('password').description('Password of the user'),
+                    password: Joi.string().min(8).required().example('password').description('Password of the user'),
                     username: Joi.string().required().example('johndoe').description('Username of the user')
                 })
             }
@@ -94,7 +94,7 @@ module.exports = [
                     firstName: Joi.string().min(3).example('John').description('Firstname of the user'),
                     lastName: Joi.string().min(3).example('Doe').description('Lastname of the user'),
                     email: Joi.string().email().example('john@doe.fr').description('Email of the user'),
-                    password: Joi.string().example('password').description('Password of the user'),
+                    password: Joi.string().min(8).example('password').description('Password of the user'),
                     username: Joi.string().example('johndoe').description('Username of the user')
                 })
             }
@@ -121,7 +121,7 @@ module.exports = [
             validate: {
                 payload: Joi.object({
                     email: Joi.string().email().required().example('john@doe.fr').description('Email of the user'),
-                    password: Joi.string().required().example('password').description('Password of the user')
+                    password: Joi.string().min(8).required().example('password').description('Password of the user')
                 })
             }
         },

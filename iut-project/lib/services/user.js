@@ -59,7 +59,7 @@ module.exports = class UserService extends Service {
             throw Boom.notFound('User not found');
         }
 
-        return {message: 'User updated successfully'};
+        return {message: 'User updated successfully', user : user};
     }
 
     async login(email, password) {
