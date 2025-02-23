@@ -23,7 +23,13 @@ module.exports = [
 
             const { userService } = request.services();
 
-            return await userService.create(request.payload);
+            try {
+                const result = await userService.create(request.payload);
+                return h.response(result).code(201);
+
+            } catch (err) {
+                return h.response({ error: err.message }).code(err.output.statusCode);
+            }
         }
     },
     {
@@ -39,7 +45,13 @@ module.exports = [
 
             const { userService } = request.services();
 
-            return await userService.findAll();
+            try {
+                const result = await userService.findAll();
+                return h.response(result).code(200);
+
+            } catch (err) {
+                return h.response({ error: err.message }).code(err.output.statusCode);
+            }
         }
     },
     {
@@ -57,7 +69,13 @@ module.exports = [
 
             const { userService } = request.services();
 
-            return await userService.delete(request.params.id);
+            try {
+                const result = await userService.delete(request.params.id);
+                return h.response(result).code(200);
+
+            } catch (err) {
+                return h.response({ error: err.message }).code(err.output.statusCode);
+            }
         }
     },
     {
@@ -85,7 +103,13 @@ module.exports = [
 
             const { userService } = request.services();
 
-            return await userService.update(request.params.id, request.payload);
+            try {
+                const result = await userService.update(request.params.id, request.payload);
+                return h.response(result).code(200);
+
+            } catch (err) {
+                return h.response({ error: err.message }).code(err.output.statusCode);
+            }
         }
     },
     {
@@ -105,7 +129,13 @@ module.exports = [
 
             const { userService } = request.services();
 
-            return await userService.login(request.payload.email, request.payload.password);
+            try {
+                const result = await userService.login(request.payload.email, request.payload.password);
+                return h.response(result).code(200);
+
+            } catch (err) {
+                return h.response({ error: err.message }).code(err.output.statusCode);
+            }
         }
     }
 ];

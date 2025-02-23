@@ -9,10 +9,19 @@ module.exports = class UserService extends Service {
 
     async create(user) {
         const { User } = this.server.models();
+
+        // Vérifiez si l'utilisateur existe déjà par email
+        const existingUser = await User.query().findOne({ email: user.email });
+
+        if (existingUser) {
+            throw Boom.conflict('Email already in use');
+        }
+
         const newUser = await User.query().insertAndFetch(user);
 
-        // Send welcome email
+        // Envoyer un email de bienvenue
         const { mailService } = this.server.services();
+
         await mailService.sendWelcomeEmail(newUser);
 
         return newUser;
@@ -25,30 +34,46 @@ module.exports = class UserService extends Service {
         return User.query();
     }
 
-    delete(id){
+    async delete(id) {
 
-        const { User } = this.server.models();
+        const {User} = this.server.models();
 
-        return User.query().deleteById(id);
+        // Supprimer l'utilisateur par ID
+        const rowsDeleted = await User.query().deleteById(id);
+
+        if (rowsDeleted === 0) {
+            throw Boom.notFound('User not found');
+        }
+
+        return {message: 'User deleted successfully'};
     }
 
-    update(id, user){
+    async update(id, user) {
 
-        const { User } = this.server.models();
+        const {User} = this.server.models();
 
-        return User.query().findById(id).patch(user);
+        // Mettre à jour l'utilisateur par ID
+        const rowsUpdated = await User.query().findById(id).patch(user);
+
+        if (rowsUpdated === 0) {
+            throw Boom.notFound('User not found');
+        }
+
+        return {message: 'User updated successfully'};
     }
 
     async login(email, password) {
 
         const { User } = this.server.models();
 
+        // Trouver l'utilisateur par email et mot de passe
         const user = await User.query().findOne({ email, password });
 
         if (!user) {
             throw Boom.unauthorized('Invalid credentials');
         }
 
+        // Générer un token JWT pour l'utilisateur
         const token = Jwt.token.generate(
             {
                 id: user.id, // Ajout de l'id de l'utilisateur pour les favoris
